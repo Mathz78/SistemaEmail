@@ -27,19 +27,23 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
-            $('#tabela').empty();
-            $.ajax({
-                url: "{{ route('emails') }}",
-                type: "GET",
-                success: function (emails) {
-                    $.each(emails, function (index, emails) {
-                        for (var i = 0; emails.length > i; i++) {
-                            $('#tabela').append('<tr><td>' + emails[i].id + '</td><td>' + emails[i].name + '</td><td>' + emails[i].assunto + '</td>' +
-                                '<td>' + emails[i].created_at + '</td><td><a href="#">Details</a></td></tr>');
-                        }
-                    })
-                }
-            }, 1);
+        $(document).ready(function () {
+            var intervalo = setInterval(function(){
+                $('#tabela').empty();
+                $.ajax({
+                    url:"{{ route('emails') }}",
+                    type:"GET",
+                    success:function(emails) {
+                        $.each(emails, function(index, emails){
+                            for(var i=0; emails.length > i; i++) {
+                                $('#tabela').append('<tr><td>' + emails[i].id + '</td><td>' + emails[i].name + '</td><td>' + emails[i].assunto + '</td>' +
+                                    '<td>' + emails[i].created_at + '</td><td><a href="#">Details</a></td></tr>');
+                            }
+                        })
+                    }
+                })
+            }, 1000);
+        });
     </script>
 
 @endsection
