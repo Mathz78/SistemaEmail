@@ -17,6 +17,7 @@ Route::get('/', 'LoginController@index')->name('formLogin');
 Route::post('/login', 'LoginController@login')->name('login');
 Route::get('/logout', 'LoginController@logout')->name('logout');
 Route::get('/dashboard', 'LoginController@dashboard')->name('dashboard');
+Route::get('/emails', 'LoginController@getEmails')->name('emails');
 
 //Rota dos emails
 Route::get('/dashboard/enviados', 'EmailController@enviados')->name('email.enviados');

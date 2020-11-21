@@ -25,19 +25,21 @@
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script>
-        $(document).ready(function(){
+            $('#tabela').empty();
             $.ajax({
-                type:'GET',		//Definimos o método HTTP usado
-                dataType: 'array',	//Definimos o tipo de retorno
-                url: '/dashboard',//Definindo o arquivo onde serão buscados os dados
-                success: function(dados){
-                    for(var i=0;dados.length>i;i++){
-                        //Adicionando registros retornados na tabela
-                        $('#tabela').append('<tr><td>'+dados[i].id+'</td><td>'+dados[i].name+'</td><td>'+dados[i].assunto+'</td><td>'+dados[i].created_at+'</td></tr>');
-                    }
+                url: "{{ route('emails') }}",
+                type: "GET",
+                success: function (emails) {
+                    $.each(emails, function (index, emails) {
+                        for (var i = 0; emails.length > i; i++) {
+                            $('#tabela').append('<tr><td>' + emails[i].id + '</td><td>' + emails[i].name + '</td><td>' + emails[i].assunto + '</td>' +
+                                '<td>' + emails[i].created_at + '</td><td><a href="#">Details</a></td></tr>');
+                        }
+                    })
                 }
-            });
-        });
+            }, 1);
     </script>
+
 @endsection

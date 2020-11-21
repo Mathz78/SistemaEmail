@@ -47,18 +47,26 @@ class LoginController extends Controller
 
     public function dashboard()
     {
-        $user_logged = Auth::user();
-        $emails = DB::select("SELECT emails.id, users.name, emails.assunto, emails.created_at FROM emails
-        INNER JOIN users ON emails.remetente = users.id
-        WHERE emails.destinatario = $user_logged->id");
-
         if (Auth::check() === false) {
             return redirect()->route('formLogin');
         }
 
-        return view('dashboard.home', [
-        'emails' => $emails
-        ]);
+        return view('dashboard.home');
+    }
+
+    public function getEmails(Request $request)
+    {
+        if($request->ajax()){
+            $user_logged = Auth::user();
+
+            $emails = DB::select("SELECT emails.id, users.name, emails.assunto, emails.created_at FROM emails
+            INNER JOIN users ON emails.remetente = users.id
+            WHERE emails.destinatario = $user_logged->id");
+
+            return response()->json([
+                'emails' => $emails
+            ]);
+        }
     }
 
 }
