@@ -28,21 +28,45 @@
 
     <script>
         $(document).ready(function () {
-            var intervalo = setInterval(function(){
-                $('#tabela').empty();
+            var qntEmails;
+            var previousQntEmails;
+            var i = 1;
+
+            function request() {
                 $.ajax({
                     url:"{{ route('emails') }}",
                     type:"GET",
                     success:function(emails) {
-                        $.each(emails, function(index, emails){
-                            for(var i=0; emails.length > i; i++) {
-                                $('#tabela').append('<tr><td>' + emails[i].id + '</td><td>' + emails[i].name + '</td><td>' + emails[i].assunto + '</td>' +
-                                    '<td>' + emails[i].created_at + '</td><td><a href="#">Details</a></td></tr>');
-                            }
-                        })
+                        qntEmails = emails.emails.length; // 5
+
+                        function preencherTabela(){
+                            $('#tabela').empty();
+                            $.each(emails, function(index, emails){
+                                for(var i=0; emails.length > i; i++) {
+                                    $('#tabela').append('<tr><td>' + emails[i].id + '</td><td>' + emails[i].name + '</td><td>' + emails[i].assunto + '</td>' +
+                                        '<td>' + emails[i].created_at + '</td><td><a href="#">Details</a></td></tr>');
+                                }
+                            })
+                        }
+
+                        if (i === 1){
+                            preencherTabela();
+                        }
+                        i++;
+
+                        if (qntEmails === previousQntEmails){
+                            console.log("Não faz nada.");
+                        } else {
+                            preencherTabela();
+                            previousQntEmails = qntEmails;
+                        }
                     }
                 })
-            }, 1000);
+            }
+
+            var intervalo = setInterval(function(){
+                request();
+            }, 1);
         });
     </script>
 
